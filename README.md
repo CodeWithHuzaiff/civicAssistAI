@@ -1,8 +1,8 @@
-# CivicAssist AI
+# CivicAssist AI (MERN Stack)
 
 A multilingual GenAI-powered public benefits navigator that helps Indian citizens discover government schemes they're eligible for.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black) ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-f7df1e) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38bdf8) ![Gemini](https://img.shields.io/badge/Gemini-2.0--flash-4285F4)
+![React](https://img.shields.io/badge/React-18-blue) ![Node.js](https://img.shields.io/badge/Node.js-Express-green) ![MongoDB](https://img.shields.io/badge/MongoDB-Database-green) ![Vite](https://img.shields.io/badge/Vite-Build-purple) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38bdf8) ![Gemini](https://img.shields.io/badge/Gemini-2.0--flash-4285F4)
 
 ---
 
@@ -10,14 +10,14 @@ A multilingual GenAI-powered public benefits navigator that helps Indian citizen
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│                    Frontend (Next.js)                   │
+│                   Frontend (React + Vite)              │
 │  ┌──────────┐ ┌───────────────┐ ┌─────────┐ ┌───────┐ │
 │  │Home Page │ │Eligibility    │ │Results  │ │Admin  │ │
 │  │          │ │Form           │ │Page     │ │Page   │ │
 │  └──────────┘ └───────┬───────┘ └────┬────┘ └───┬───┘ │
 │                       │              │          │      │
 ├───────────────────────┼──────────────┼──────────┼──────┤
-│                  API Routes          │          │      │
+│                   Backend (Node + Express)             │
 │  ┌────────────────────┴──┐ ┌────────┴───┐ ┌───┴────┐ │
 │  │ /api/analyze          │ │/api/translate│ │/api/   │ │
 │  │ (RAG Pipeline)        │ │(Translation) │ │admin/  │ │
@@ -27,27 +27,23 @@ A multilingual GenAI-powered public benefits navigator that helps Indian citizen
 │  └──────────┬────────────┘ └────────────┘ │evaluate│ │
 │             │                              └────────┘ │
 ├─────────────┼─────────────────────────────────────────┤
-│         Core Engine                                    │
-│  ┌──────┴───────┐  ┌──────────────┐  ┌──────────────┐│
-│  │ RAG Pipeline │  │ Keyword      │  │ Rule-based   ││
-│  │ (Gemini 2.0) │  │ Similarity   │  │ Filtering    ││
-│  └──────────────┘  └──────────────┘  └──────────────┘│
-│  ┌────────────────────────────────────────────────────┐│
-│  │ Knowledge Base: 10 Indian Government Schemes      ││
-│  └────────────────────────────────────────────────────┘│
+│         Core Engine & Database                         │
+│  ┌──────┴───────┐   ┌────────────────┐   ┌────────────┐│
+│  │ RAG Pipeline │   │ MongoDB &      │   │ Auth       ││
+│  │ (Gemini 2.0) │   │ JWT Users      │   │ Middleware ││
+│  └──────────────┘   └────────────────┘   └────────────┘│
 └────────────────────────────────────────────────────────┘
 ```
 
 ## Features
 
+- **Decoupled Architecture**: Clean separation between React frontend and Node.js backend.
 - **AI-Powered Recommendations**: RAG pipeline using Gemini 2.0 Flash for personalized scheme matching
 - **AI Chatbot**: Floating chat widget to ask questions about any scheme — powered by Gemini with fallback answers
+- **Custom Authentication**: Custom JWT-based user authentication system replacing NextAuth.
 - **10 Government Schemes**: PM Kisan, Ayushman Bharat, PMAY, Mudra Loan, Scholarships, LPG Subsidy, MSME Credit, Skill India, State Scholarship, Senior Pension
 - **Multilingual**: English and Hindi with AI-powered translation + local fallback
 - **Dark/Light Mode**: Theme toggle with system preference support
-- **Voice Input**: Mock voice input for accessibility
-- **Document Upload**: Mock OCR for auto-filling profile from documents
-- **Admin Panel**: Evaluation mode with test profiles and precision/recall metrics
 - **Responsive Design**: Mobile-first government-tech aesthetic
 
 ## Quick Start
@@ -56,6 +52,7 @@ A multilingual GenAI-powered public benefits navigator that helps Indian citizen
 
 - Node.js 18+  
 - npm  
+- MongoDB URI
 - Gemini API key
 
 ### Installation
@@ -64,94 +61,66 @@ A multilingual GenAI-powered public benefits navigator that helps Indian citizen
 # Clone and enter the project
 cd civicassist-ai
 
-# Install dependencies
-npm install
+# Install root, backend, and frontend dependencies
+npm run install-all
 
-# Copy environment file and add your Gemini API key
-cp .env.example .env.local
-# Edit .env.local and set: GEMINI_API_KEY=your-key-here
+# Configure environment variables
+# In the backend directory, create a .env file:
+# PORT=5005
+# MONGODB_URI=your-mongodb-uri
+# GEMINI_API_KEY=your-gemini-key
+# JWT_SECRET=your-secret
 
-# Start development server
+# Start both development servers concurrently
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Test Profiles
-
-Use these profiles to test the eligibility checker:
-
-| Profile | Income | State | Age | Occupation | Category | Expected Schemes |
-|---------|--------|-------|-----|------------|----------|------------------|
-| Young Farmer | ₹1,20,000 | UP | 28 | Farmer | - | PM Kisan, Ayushman Bharat |
-| SC Student | ₹1,50,000 | Bihar | 20 | Student | SC | SC/ST Scholarship, Ayushman |
-| Senior Citizen | ₹90,000 | Maharashtra | 68 | Retired | - | Senior Pension, Ayushman |
-| Woman Entrepreneur | ₹2,50,000 | Gujarat | 35 | Self-employed | - | Mudra Loan, MSME Credit |
-| BPL Family | ₹80,000 | Rajasthan | 40 | Laborer | - | LPG Subsidy, PMAY, Ayushman |
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | Next.js 14 (App Router) |
-| Language | JavaScript (ES6+) |
+| Frontend Core | React 18, Vite |
+| Backend Core | Node.js, Express |
+| Database | MongoDB, Mongoose |
 | Styling | TailwindCSS 4 |
 | UI Components | ShadCN UI |
+| Routing | React Router v6 |
 | AI | Google Gemini 2.0 Flash |
-| Theme | next-themes (dark/light/system) |
-| Search | Local keyword-based cosine similarity |
-| Deployment | Vercel-ready |
 
 ## Folder Structure
 
 ```
-src/
-├── app/
-│   ├── api/
-│   │   ├── analyze/route.js      # RAG pipeline endpoint
-│   │   ├── chat/route.js         # AI chatbot endpoint
-│   │   ├── translate/route.js    # Translation endpoint
-│   │   ├── ocr/route.js          # Mock OCR endpoint
-│   │   └── admin/evaluate/route.js # Evaluation endpoint
-│   ├── eligibility/page.jsx      # Eligibility form
-│   ├── results/page.jsx          # Results display
-│   ├── admin/page.jsx            # Admin panel
-│   ├── layout.jsx                # Root layout
-│   └── page.jsx                  # Home page
-├── components/
-│   ├── ui/                       # ShadCN components
-│   ├── Navbar.jsx
-│   ├── SchemeCard.jsx
-│   ├── LoadingAnimation.jsx
-│   ├── VoiceInputButton.jsx
-│   ├── LanguageToggle.jsx
-│   ├── ChatBot.jsx
-│   ├── ThemeProvider.jsx
-│   └── ThemeToggle.jsx
-└── lib/
-    ├── ai/
-    │   ├── rag.js                # RAG pipeline (Gemini)
-    │   └── prompts.js            # Prompt templates
-    ├── schemes/
-    │   ├── schemes-data.js       # 10 government schemes
-    │   └── embeddings.js         # Search & filtering
-    └── utils.js                  # Utilities
+civicassist-ai/
+├── backend/                  # Node.js + Express
+│   ├── config/               # DB and environment configuration
+│   ├── controllers/          # API logic (Auth, Chat, Analyze)
+│   ├── lib/                  # AI Prompts, Prompts, Schemes Data
+│   ├── middleware/           # JWT and Error handling
+│   ├── models/               # MongoDB models (User.js)
+│   ├── routes/               # Express Routes
+│   ├── server.js             # Server Entry Point
+│   └── package.json
+│
+├── frontend/                 # React + Vite
+│   ├── src/
+│   │   ├── components/       # ShadCN & Custom UI components
+│   │   ├── lib/              # Utils and schemas
+│   │   ├── pages/            # React Pages (Home, Login, Admin, Results)
+│   │   ├── App.jsx           # React Router Map
+│   │   ├── main.jsx          # Mount Entry
+│   │   └── index.css         # Tailwind v4 directives
+│   ├── vite.config.js        # Vite config with backend proxy on 5005
+│   └── package.json
+│
+└── package.json              # Root orchestrator with 'concurrently'
 ```
 
-## How It Works
+## Integration Details
 
-1. **User Input**: User fills the eligibility form with income, state, occupation, etc.
-2. **Keyword Search**: System finds relevant schemes using keyword-based semantic similarity
-3. **Rule Filtering**: Hard constraints (income limits, age, state, category) are applied
-4. **AI Analysis**: Gemini 2.0 Flash generates personalized explanations for each matching scheme
-5. **Results**: User receives scheme cards with benefits, qualification reasons, documents, and next steps
-
-## Notes
-
-- Without a Gemini API key, the app uses rule-based fallback recommendations
-- The OCR feature is mocked — it returns sample data for any uploaded document
-- Voice input is mocked — it fills in a random sample description
-- The vector search uses keyword similarity instead of real embeddings for simplicity
+- The frontend communicates with the backend seamlessly by proxying all requests containing `/api/*` to `http://localhost:5005` in Vite development mode.
+- Users authenticate via `/api/auth/login`, and JWTs are stored client-side for subsequent API requests ensuring a stateless, decoupled architecture.
 
 ## License
 
